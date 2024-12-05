@@ -1,0 +1,35 @@
+name: Python Linting Workflow
+
+on:
+  push:
+    branches:
+      - main  # You can also use any other branch you'd like to trigger linting on
+  pull_request:
+    branches:
+      - main  # Lint when PR is made to the main branch
+
+jobs:
+  lint_python:
+    runs-on: ubuntu-latest  # This defines the OS the action will run on
+
+    steps:
+    # Step 1: Set up Python environment
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'  # Set the desired Python version (3.x is the latest)
+
+    # Step 2: Install dependencies
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt  # Assuming you have a requirements.txt file for your dependencies
+        pip install flake8  # Make sure flake8 is installed
+
+    # Step 3: Run flake8 linting command on the server directory
+    - name: Run flake8 linting
+      run: |
+        flake8 server/**/*.py  # This lints all .py files in the 'server' directory recursively
+
+    # Step 4: Print success message
+    - name: Linting completed successfully
+      run: echo "Linting completed successfully!"
